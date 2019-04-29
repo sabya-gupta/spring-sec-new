@@ -22,7 +22,7 @@
 			<version>${springframework.version}</version>
 		</dependency>
 		
-		<!-- Servlet, JSP and JSTL support -->
+		<!-- Servlet, JSP and JSTL support in project -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
