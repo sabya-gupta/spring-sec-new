@@ -64,7 +64,7 @@
 						<div style="margin-bottom: 25px" class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
 							
-							<input type="text" name="username" placeholder="user name" class="form-control">
+							<input type="text" name="username" placeholder="username" class="form-control">
 						</div>
 
 						<!-- Password -->
