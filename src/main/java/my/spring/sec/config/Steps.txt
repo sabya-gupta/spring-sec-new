@@ -1,0 +1,15 @@
+1. Create Spring MVC Config file which contains base package scan and view resolver
+
+2. Create Dispatcher servlet initializer and direct  it to the config java file
+
+3. Add Spring security web dependency
+
+4. Add Spring security config dependency
+
+5. Create Spring security initializer
+
+6. Create Spring security Config
+
+7. Add users, password and roles.
+
+CUSTOM LOGIN FORM
