@@ -16,4 +16,21 @@ public class SpringSecController {
 	public String showLogin() {
 		return "do-Login";
 	}
+	
+	@GetMapping("/leaders")
+	public String showLeaders() {
+		return "leaders-page";
+	}
+
+	@GetMapping("/systems")
+	public String showSystems() {
+		return "systems-page";
+	}
+	
+	
+	@GetMapping("/access-denied")
+	public String showAccessDenied() {
+		System.out.println("Inside access denied");
+		return "denied-page_";
+	}
 }

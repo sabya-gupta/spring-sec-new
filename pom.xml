@@ -37,7 +37,14 @@
 			<version>${springsecurity.version}</version>
 		</dependency>
 		
-		<!-- Servlet, JSP and JSTL support in project -->
+	<!-- Spring Security tag Library -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${springsecurity.version}</version>
+		</dependency>
+
+	<!-- Servlet, JSP and JSTL support in project -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

@@ -19,3 +19,7 @@ CUSTOM LOGIN FORM
 	2. Develop Controller for custom login form
 	
 	3. Create a login form.
+	
+	USERID and roles
+	1. POM and JSP - add Spring Security Jsp Tag Lib
+	
