@@ -13,3 +13,9 @@
 7. Add users, password and roles.
 
 CUSTOM LOGIN FORM
+
+	1. Modify Spring Sec config to access custom login form
+	
+	2. Develop Controller for custom login form
+	
+	3. Create a login form.
