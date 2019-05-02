@@ -1,8 +1,10 @@
 package my.spring.sec.config;
 
 import java.beans.PropertyVetoException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -19,7 +24,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
 @EnableWebMvc //config for replace web xml
-@ComponentScan(basePackages="my.spring.sec") //config for component scan for base package
+@ComponentScan(basePackages= {"my.spring.sec", "my.spring.rest", "my.spring.entity"}) //config for component scan for base package
 @PropertySource("classpath:persistence-mysql.properties")
 public class AppConfig {
 
@@ -77,6 +82,8 @@ public class AppConfig {
 		return pooledDataSource;
 	}
 
+	
+	//JPA RElated
 	@Bean
 	public DataSource bdDataSource () {
 		
@@ -115,5 +122,102 @@ public class AppConfig {
 		return pooledDataSource;
 	}
 	
+	@Bean
+    LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(bdDataSource ());
+        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManagerFactoryBean.setPackagesToScan("my.spring.entity");
+ 
+        Properties jpaProperties = new Properties();
+     
+        //Configures the used database dialect. This allows Hibernate to create SQL
+        //that is optimized for the used database.
+        jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+ 
+        //Specifies the action that is invoked to the database when the Hibernate
+        //SessionFactory is created or closed.
+        jpaProperties.put("hibernate.hbm2ddl.auto", 
+                env.getRequiredProperty("hibernate.hbm2ddl.auto")
+        );
+ 
+        //Configures the naming strategy that is used when Hibernate creates
+        //new database objects and schema elements
+//        jpaProperties.put("hibernate.ejb.naming_strategy", 
+//                env.getRequiredProperty("hibernate.ejb.naming_strategy")
+//        );
+ 
+        //If the value of this property is true, Hibernate writes all SQL
+        //statements to the console.
+        jpaProperties.put("hibernate.show_sql", 
+                env.getRequiredProperty("hibernate.show_sql")
+        );
+ 
+        //If the value of this property is true, Hibernate will format the SQL
+        //that is written to the console.
+        jpaProperties.put("hibernate.format_sql", 
+                env.getRequiredProperty("hibernate.format_sql")
+        );
+ 
+        entityManagerFactoryBean.setJpaProperties(jpaProperties);
+ 
+        return entityManagerFactoryBean;
+    }
+
+//	@Bean("mysecondbean")
+//    LocalContainerEntityManagerFactoryBean entityManagerFactory2() {
+//        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+//        entityManagerFactoryBean.setDataSource(securityDataSource());
+//        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+//        entityManagerFactoryBean.setPackagesToScan("my.spring.entity");
+// 
+//        Properties jpaProperties = new Properties();
+//     
+//        //Configures the used database dialect. This allows Hibernate to create SQL
+//        //that is optimized for the used database.
+//        jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+// 
+//        //Specifies the action that is invoked to the database when the Hibernate
+//        //SessionFactory is created or closed.
+//        jpaProperties.put("hibernate.hbm2ddl.auto", 
+//                env.getRequiredProperty("hibernate.hbm2ddl.auto")
+//        );
+// 
+//        //Configures the naming strategy that is used when Hibernate creates
+//        //new database objects and schema elements
+////        jpaProperties.put("hibernate.ejb.naming_strategy", 
+////                env.getRequiredProperty("hibernate.ejb.naming_strategy")
+////        );
+// 
+//        //If the value of this property is true, Hibernate writes all SQL
+//        //statements to the console.
+//        jpaProperties.put("hibernate.show_sql", 
+//                env.getRequiredProperty("hibernate.show_sql")
+//        );
+// 
+//        //If the value of this property is true, Hibernate will format the SQL
+//        //that is written to the console.
+//        jpaProperties.put("hibernate.format_sql", 
+//                env.getRequiredProperty("hibernate.format_sql")
+//        );
+// 
+//        entityManagerFactoryBean.setJpaProperties(jpaProperties);
+// 
+//        return entityManagerFactoryBean;
+//    }
 	
+	
+    @Bean
+    JpaTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory((EntityManagerFactory) entityManagerFactory().getNativeEntityManagerFactory());
+        return transactionManager;
+    }
+
+//    @Bean
+//    JpaTransactionManager transactionManager2() {
+//        JpaTransactionManager transactionManager = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory((EntityManagerFactory) entityManagerFactory2().getNativeEntityManagerFactory());
+//        return transactionManager;
+//    }
 }
