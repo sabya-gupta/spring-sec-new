@@ -10,6 +10,6 @@
 	<h2>Leaders Page</h2>
 	
 	<hr>
-	<a href=""${pageContext.request.contextPath}/">Back</a>
+	<a href="${pageContext.request.contextPath}/">Back</a>
 </body>
 </html>

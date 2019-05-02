@@ -1,11 +1,16 @@
 package my.spring.sec.controllers;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SpringSecController {
 
+	@Autowired
+	private DataSource bdDataSource;
 	
 	@GetMapping("/")
 	public String showHomePage() {
@@ -32,5 +37,10 @@ public class SpringSecController {
 	public String showAccessDenied() {
 		System.out.println("Inside access denied");
 		return "denied-page_";
+	}
+	
+	@GetMapping("/bdreq1")
+	public String getBDReq1() {
+		return("home");
 	}
 }

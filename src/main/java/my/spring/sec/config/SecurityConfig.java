@@ -1,5 +1,8 @@
 package my.spring.sec.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,18 +15,26 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private DataSource securityDataSource;
 	
 	//IN MEMORY
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		//in memory
-		UserBuilder users = User.withDefaultPasswordEncoder();
+//		UserBuilder users = User.withDefaultPasswordEncoder();
+//		
+//		auth.inMemoryAuthentication()
+//		.withUser(users.username("user1").password("Password123").roles("EMPLOYEE"))
+//		.withUser(users.username("user2").password("Test123").roles("EMPLOYEE", "MANAGER"))
+//		.withUser(users.username("user3").password("Password123").roles("ADMIN", "EMPLOYEE"));
 		
-		auth.inMemoryAuthentication()
-		.withUser(users.username("user1").password("Password123").roles("EMPLOYEE"))
-		.withUser(users.username("user2").password("Test123").roles("EMPLOYEE", "MANAGER"))
-		.withUser(users.username("user3").password("Password123").roles("ADMIN", "EMPLOYEE"));
+		
+		auth.jdbcAuthentication().dataSource(securityDataSource);
 	}
+	
+	
+	//BD Related
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -44,5 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().accessDeniedPage("/access-denied")
 			;
 	}
+	
 
 }
